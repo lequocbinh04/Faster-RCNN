@@ -8,6 +8,7 @@ from optparse import OptionParser
 import pickle
 import re
 
+import keras
 from keras import backend as K
 from keras.optimizers import Adam, SGD, RMSprop
 from keras.layers import Input
