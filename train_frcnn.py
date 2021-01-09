@@ -109,8 +109,8 @@ num_imgs = len(train_imgs)
 #train_imgs = [s for s in all_imgs if s['imageset'] == 'trainval']
 #val_imgs = [s for s in all_imgs if s['imageset'] == 'test']
 
-print(f'Num train samples {len(train_imgs}')
-print(f'Num val samples {len(val_imgs)}')
+print('Num train samples' + str(len(train_imgs)))
+print('Num val samples' + str(len(val_imgs)))
 
 
 data_gen_train = data_generators.get_anchor_gt(train_imgs, classes_count, C, nn.get_img_output_length, K.common.image_dim_ordering(), mode='train')
