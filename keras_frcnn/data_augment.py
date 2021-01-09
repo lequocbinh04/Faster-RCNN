@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import copy
 import pydicom as dicom
+
 def read_dicom(img_path):
     ds=dicom.dcmread(img_path)
     dcm_sample=ds.pixel_array

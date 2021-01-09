@@ -1,5 +1,12 @@
 import cv2
 import numpy as np
+import pydicom as dicom
+
+def read_dicom(img_path):
+    ds=dicom.dcmread(img_path)
+    dcm_sample=ds.pixel_array
+    dcm_sample=exposure.equalize_adapthist(dcm_sample)
+    return dcm_sample
 
 def get_data(input_path):
 	found_bg = False
@@ -33,7 +40,7 @@ def get_data(input_path):
 			if filename not in all_imgs:
 				all_imgs[filename] = {}
 				
-				img = cv2.imread(filename)
+				img = read_dicom(filename)
 				(rows,cols) = img.shape[:2]
 				all_imgs[filename]['filepath'] = filename
 				all_imgs[filename]['width'] = cols
