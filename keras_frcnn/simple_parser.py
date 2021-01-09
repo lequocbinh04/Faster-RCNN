@@ -1,7 +1,26 @@
 import cv2
 import numpy as np
-import pydicom as dicom
-from skimage import exposure
+import pydicom
+from pydicom.pixel_data_handlers.util import apply_voi_lut
+
+def read_xray(path, voi_lut = True, fix_monochrome = True):
+    dicom = pydicom.read_file(path)
+    
+    # VOI LUT (if available by DICOM device) is used to transform raw DICOM data to "human-friendly" view
+    if voi_lut:
+        data = apply_voi_lut(dicom.pixel_array, dicom)
+    else:
+        data = dicom.pixel_array
+               
+    # depending on this value, X-ray may look inverted - fix that:
+    if fix_monochrome and dicom.PhotometricInterpretation == "MONOCHROME1":
+        data = np.amax(data) - data
+        
+    data = data - np.min(data)
+    data = data / np.max(data)
+    data = (data * 255).astype(np.uint8)
+        
+    return data
 
 def read_dicom(img_path):
     ds=dicom.dcmread(img_path)
@@ -43,7 +62,7 @@ def get_data(input_path):
 			if filename not in all_imgs:
 				all_imgs[filename] = {}
 				
-				img = read_dicom(filename)
+				img = read_xray(filename, fix_monochrome = False)
 				(rows,cols) = img.shape[:2]
 				all_imgs[filename]['filepath'] = filename
 				all_imgs[filename]['width'] = cols
