@@ -84,7 +84,7 @@ else:
 
 train_imgs, classes_count, class_mapping = get_data(options.train_path)
 val_imgs, _, _ = get_data(options.train_path)
-
+print('Done generate data')
 if 'bg' not in classes_count:
 	classes_count['bg'] = 0
 	class_mapping['bg'] = len(class_mapping)
